@@ -24,3 +24,9 @@ export class FindUserDto {
   @Length(6, 20, { message: '手机号码长度应在6到20位之间' })
   phone: string;
 }
+
+export class CreateGithubCodeDto {
+  @ApiProperty()
+  @IsNotEmpty({ message: ' code不能为空' })
+  code: string;
+}

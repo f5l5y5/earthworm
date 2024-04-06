@@ -1,6 +1,6 @@
-import { setToken } from "~/utils/token";
-import { fetchLogin, fetchSignUp } from "~/api/auth";
+import { fetchLogin, fetchLoginByGithub, fetchSignUp } from "~/api/auth";
 import { useUserStore } from "~/store/user";
+import { setToken } from "~/utils/token";
 
 async function login({ phone, password }: { phone: string; password: string }) {
   const userStore = useUserStore();
@@ -9,6 +9,15 @@ async function login({ phone, password }: { phone: string; password: string }) {
     phone,
     password,
   });
+
+  setToken(data.token);
+  userStore.initUser(data.user);
+}
+
+async function loginByGithub(code: string) {
+  const userStore = useUserStore();
+
+  const data = await fetchLoginByGithub({ code });
 
   setToken(data.token);
   userStore.initUser(data.user);
@@ -38,6 +47,7 @@ async function signup({
 export function useAuth() {
   return {
     login,
-    signup
+    signup,
+    loginByGithub,
   };
 }
